@@ -18,3 +18,4 @@ the app should have these features in the end:
 - user should be able to select predefined locations
 - user sould be able to select the different kinds of pollen
 - based on the selection it should be displayed how strong the pollen activity in the selected area(s) is
+- notifications/widget 
