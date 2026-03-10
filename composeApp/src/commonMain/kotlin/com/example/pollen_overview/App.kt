@@ -24,49 +24,31 @@ import org.jetbrains.compose.resources.painterResource
 
 import pollen_overview.composeapp.generated.resources.Res
 import pollen_overview.composeapp.generated.resources.compose_multiplatform
-
+import androidx.compose.runtime.*
+import androidx.compose.ui.geometry.Rect
+import com.example.pollen_overview.model.Region
+import com.example.pollen_overview.repository.Repository
+import com.example.pollen_overview.ui.View
+import com.example.pollen_overview.ui.ViewModel
+import io.ktor.client.plugins.HttpTimeout
 
 @Composable
 @Preview
 fun App() {
     val scope = rememberCoroutineScope()
-    var csvResult by remember { mutableStateOf("Loading...") }
+    val viewModel = remember {
+        val client = HttpClient { install(HttpTimeout) }
+        val api = PollenApi(client)
+        val repository = Repository(api, useFake = true)
+        //val repository = Repository(api, useFake = false)
+        ViewModel(repository, scope)
+    }
+
     LaunchedEffect(Unit) {
-        try {
-            val client = HttpClient { expectSuccess = true
-            install(HttpTimeout)
-            {requestTimeoutMillis = 30000
-                connectTimeoutMillis = 30000
-                socketTimeoutMillis = 30000}
-            }
-            val api = PollenApi(client)
-            val csv = api.getData(Station.LAUSANNE_VD, Granularity.HOURLY)
-            csvResult = csv.take(300)
-        } catch (e: Exception) {
-            csvResult = "ERROR: ${e::class.simpleName}: ${e.message}"
-        }
+        viewModel.loadPollen(Region.ZH)
     }
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = "grrr hasel"
-                Text(csvResult)
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                }
-            }
-        }
-    }
+
+    val uiState by viewModel.uiState.collectAsState()
+
+    View(uiState)   // UI wird ausgelagert
 }

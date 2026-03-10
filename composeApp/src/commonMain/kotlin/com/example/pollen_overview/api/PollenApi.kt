@@ -36,3 +36,13 @@ enum class Granularity(val code: String){
     HOURLY("h"),
     DAILY("d")
 }
+
+enum class PlantType(val columnName: String, val displayName: String) {
+    BIRKE("kabetuh0", "Birke"),
+    GRAESER("khpoach0", "Gräser"),
+    ERLE("kaalnuh0", "Erle"),
+    HASEL("kacoryh0", "Hasel"),
+    BUCHE("kafaguh0", "Buche"),
+    ESCHE("kafraxh0", "Esche"),
+    EICHE("kaquerh0", "Eiche")
+}

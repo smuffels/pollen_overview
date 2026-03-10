@@ -40,10 +40,10 @@ enum class Region{
     ZH
 }
 
-enum class Level{
-    NONE,
-    LIGHT,
-    MEDIUM,
-    STRONG,
-    VERY_STRONG
+enum class Level(val displayName: String){
+    NONE("Keine"),
+    LOW("Schwach"),
+    MEDIUM("Mittel"),
+    STRONG("Stark"),
+    VERY_STRONG("Sehr stark")
 }
