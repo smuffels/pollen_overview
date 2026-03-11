@@ -26,15 +26,32 @@ class Repository(private val api: PollenApi, private val useFake: Boolean = fals
 
     private fun fakeData(region: Region): List<PollenData> {
         val timestamp = Instant.parse("2026-03-09T23:00:00Z")
-        return listOf(
-            PollenData("Birke", region, Level.STRONG, timestamp),
-            PollenData("Hasel", region, Level.MEDIUM, timestamp),
-            PollenData("Erle", region, Level.LOW, timestamp),
-            PollenData("Gräser", region, Level.NONE, timestamp),
-            PollenData("Esche", region, Level.VERY_STRONG, timestamp),
-            PollenData("Buche", region, Level.LOW, timestamp),
-            PollenData("Eiche", region, Level.NONE, timestamp),
-        )
+        return when (region){
+            Region.ZH -> listOf(
+                PollenData("Birke", region, Level.STRONG, timestamp),
+                PollenData("Hasel", region, Level.MEDIUM, timestamp),
+                PollenData("Erle", region, Level.LOW, timestamp),
+                PollenData("Gräser", region, Level.NONE, timestamp),
+                PollenData("Esche", region, Level.VERY_STRONG, timestamp),
+                PollenData("Buche", region, Level.LOW, timestamp),
+                PollenData("Eiche", region, Level.NONE, timestamp),
+            )
+            Region.TG -> listOf(
+                PollenData("Birke", region, Level.STRONG, timestamp),
+                PollenData("Hasel", region, Level.MEDIUM, timestamp),
+                PollenData("Erle", region, Level.LOW, timestamp),
+            )
+            else -> listOf(
+                PollenData("Birke", region, Level.LOW, timestamp),
+                PollenData("Hasel", region, Level.LOW, timestamp),
+                PollenData("Erle", region, Level.LOW, timestamp),
+                PollenData("Gräser", region, Level.LOW, timestamp),
+                PollenData("Esche", region, Level.LOW, timestamp),
+                PollenData("Buche", region, Level.LOW, timestamp),
+                PollenData("Eiche", region, Level.LOW, timestamp),
+            )
+        }
+
     }
 
     private fun parseCsv(csv: String, region: Region): List<PollenData>{

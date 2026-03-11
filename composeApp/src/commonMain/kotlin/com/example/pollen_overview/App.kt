@@ -50,5 +50,8 @@ fun App() {
 
     val uiState by viewModel.uiState.collectAsState()
 
-    View(uiState)   // UI wird ausgelagert
+    View(
+        uiState = uiState,
+        onRegionSelected = { region -> viewModel.loadPollen(region) }
+    )
 }
